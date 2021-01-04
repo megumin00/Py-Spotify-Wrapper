@@ -29,10 +29,7 @@ class spotifyScrape:
         
         request = requests.get(url, headers=headers)
         if request.status_code in range(400,402):
-            print(f'no auth: {request.status_code} (checkvalidtoken)')
-            self.getToken()
-            print(f'token got: {self.accessToken}\n')
-            
+            self.getToken()            
         
     
     def getAlbum(self, ID):
