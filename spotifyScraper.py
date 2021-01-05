@@ -33,34 +33,32 @@ class spotifyScrape:
     def defaultSearch(self, url):
         self.checkValidToken()
         self.response = requests.get(url, headers=self.headers) 
-    
-    def getAlbum(self, ID):      
-        url = f'https://api.spotify.com/v1/albums/{ID}'
-        self.defaultSearch(url)   
         
-    def getAlbumTracks(self, ID):
-        url = f'https://api.spotify.com/v1/albums/{ID}/tracks'
-        self.defaultSearch(url)
-
     def searchFilter(self, **kwargs):
-        url_appender = '?'
+        self.url_appender = '?'
+        print(kwargs)
         
         for i in kwargs:
-            if url_appender == '?':
-                url_appender += f'{i}={kwargs[i]}'
+            if self.url_appender == '?':
+                self.url_appender += f'{i}={kwargs[i]}'
             else:
-                url_appender += f'&{i}={kwargs[i]}'
-                
-        print(url_appender)
+                self.url_appender += f'&{i}={kwargs[i]}'
+    
+    def getAlbum(self, ID, **kwargs):   
+        self.searchFilter(**kwargs)
+        url = f'https://api.spotify.com/v1/albums/{ID}'+self.url_appender
+        self.defaultSearch(url)   
         
-
-        self.search(url_appender)
-
-
-    def search(self, url_appender):
+    def getAlbumTracks(self, ID, **kwargs):
+        self.searchFilter(**kwargs)
+        url = f'https://api.spotify.com/v1/albums/{ID}/tracks'+self.url_appender
+        self.defaultSearch(url)
+                
+    def search(self, **kwargs):
+        self.searchFilter(**kwargs)
         self.checkValidToken()
 
-        url = 'https://api.spotify.com/v1/search'+url_appender
+        url = 'https://api.spotify.com/v1/search'+self.url_appender
         
         self.response = requests.get(url, headers=self.headers)
     
@@ -68,24 +66,28 @@ class spotifyScrape:
         url = f'https://api.spotify.com/v1/artists/{ID}'
         self.defaultSearch(url)
         
-    def getArtistAlbums(self, ID):
-        url = f'https://api.spotify.com/v1/artists/{ID}/albums'
+    def getArtistAlbums(self, ID, **kwargs):
+        self.searchFilter(**kwargs)
+        url = f'https://api.spotify.com/v1/artists/{ID}/albums'+self.url_appender
         self.defaultSearch(url)
         
     def getArtistTops(self, ID, country):
         url = f'https://api.spotify.com/v1/artists/{ID}/top-tracks?country={country}'
         self.defaultSearch(url)
         
-    def getCategoryPlaylists(self, ID):
-        url = f'https://api.spotify.com/v1/browse/categories/{ID}/playlists'
+    def getCategoryPlaylists(self, ID, **kwargs):
+        self.searchFilter(**kwargs)
+        url = f'https://api.spotify.com/v1/browse/categories/{ID}/playlists'+self.url_appender
         self.defaultSearch(url)
         
-    def getUserPlaylists(self, ID):
-        url = f'https://api.spotify.com/v1/users/{ID}/playlists'
+    def getUserPlaylists(self, ID, **kwargs):
+        self.searchFilter(**kwargs)
+        url = f'https://api.spotify.com/v1/users/{ID}/playlists'+self.url_appender
         self.defaultSearch(url)
     
-    def getPlaylistTracks(self, ID):
-        url = f'https://api.spotify.com/v1/playlists/{ID}/tracks'
+    def getPlaylistTracks(self, ID, **kwargs):
+        self.searchFilter(**kwargs)
+        url = f'https://api.spotify.com/v1/playlists/{ID}/tracks'+self.url_appender
         self.defaultSearch(url)
     
     def getUserProfile(self, ID):
@@ -93,21 +95,6 @@ class spotifyScrape:
         self.defaultSearch(url)
     
     def run(self):
-        
-        #self.getToken()
-        #self.getAlbum('6nVACH6a27eOWiumAJhDWS')
-        #self.getAlbumTracks('6nVACH6a27eOWiumAJhDWS')
-        self.searchFilter(q='crystal+dolphin', type='track', limit='2')
-        #self.getArtist('0OdUWJ0sBjDrqHygGUXeCF')
-        #self.getArtistAlbums('1vCWHaC5f2uS3yhpwWbIA6')
-        #self.getArtistTops('43ZHCT0cAZBISjO8DG9PnE', 'SE')
-        #self.getCategoryPlaylists('party')
-        #self.getUserPlaylists('12182963393')
-        #self.getPlaylistTracks('3hn9aLwfBzkwA4CukUzxwS')
-        #self.getUserProfile('bruh')
-        
-        
-        print(self.response.text)
         pass
 
 if __name__ == '__main__':
