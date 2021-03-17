@@ -5,7 +5,7 @@ quick spotify data scraper built with the spotify api
 examples in spotifyScraper.py/spotifyScrape/run
 
 ## License
-GNU General Public License
+GPL-3.0 License
 
 ## Contributors
 megumin00
