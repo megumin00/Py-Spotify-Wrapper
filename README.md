@@ -6,6 +6,3 @@ quick spotify data scraper built with the spotify api
 
 ## License
 GPL-3.0 License
-
-## Contributors
-megumin00
